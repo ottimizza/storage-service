@@ -1,0 +1,13 @@
+buckets:
+    
+    - bussola-contabil:        
+        name: bussola-contabil
+        root: /buckets/ 
+        
+    - tareffa-gestao-servicos:
+        name: tareffa-gestao-servicos
+        root: /buckets/ 
+        
+    - zap-contabil:
+        name: zap-contabil
+        root: /buckets/
