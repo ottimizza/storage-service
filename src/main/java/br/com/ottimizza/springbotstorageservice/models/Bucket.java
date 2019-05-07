@@ -6,10 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- *
- * @author Lucas Martins (dev.lucasmartins@gmail.com)
- */
 @AllArgsConstructor
 @NoArgsConstructor
 public class Bucket implements Serializable {
@@ -23,5 +19,9 @@ public class Bucket implements Serializable {
     @Getter
     @Setter
     private String root;
+
+    @Getter
+    @Setter
+    private String authEndpoint;
 
 }

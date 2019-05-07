@@ -9,7 +9,17 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
@@ -28,7 +38,7 @@ public class BucketService {
                 for (Object k : map.keySet()) {
                     Map v = (Map) map.get((String) k);
 
-                    Bucket bucket = new Bucket((String) v.get("name"), (String) v.get("root"));
+                    Bucket bucket = new Bucket((String) v.get("name"), (String) v.get("root"), (String) v.get("auth_endpoint"));
                     this.buckets.put((String) k, bucket);
                 }
             }
@@ -39,6 +49,45 @@ public class BucketService {
 
     public List<Bucket> get() {
         return Arrays.asList(this.buckets.values().toArray(new Bucket[]{}));
+    }
+
+    public boolean authorize(Bucket bucket, String authorization) {
+        final String AUTH_ENDPOINT = String.format(bucket.getAuthEndpoint() + "?token=%s", authorization);
+
+        try {
+            final String ACCEPT = MediaType.APPLICATION_JSON_VALUE;
+            final String CONTENT_TYPE = MediaType.APPLICATION_JSON_VALUE;
+
+            HttpClient httpClient = HttpClientBuilder.create().build();
+            HttpGet httpGet = new HttpGet(AUTH_ENDPOINT);
+
+            // Corpo do Request.
+            httpGet.setHeader("Accept", ACCEPT);
+            httpGet.setHeader("Content-type", CONTENT_TYPE);
+            httpGet.setHeader("Authorization", String.format("Basic %s", authorization));
+
+            // Response
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            HttpEntity responseEntity = httpResponse.getEntity();
+            String responseBody = EntityUtils.toString(responseEntity, "UTF-8");
+
+            System.out.println();
+            System.out.println(String.format("*** Response ***"));
+            System.out.println(String.format("Status        -> %s", String.valueOf(statusCode)));
+            System.out.println(String.format("Body          -> %s", responseBody));
+
+            if (statusCode == 200) {
+                System.out.println("200");
+            } else if (statusCode == 401) {
+                System.out.println("401");
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return true;
     }
 
     public Bucket get(String bucketId) throws Exception {

@@ -1,5 +1,6 @@
 package br.com.ottimizza.springbotstorageservice.controllers;
 
+import br.com.ottimizza.springbotstorageservice.services.BucketService;
 import br.com.ottimizza.springbotstorageservice.services.StorageService;
 import java.io.IOException;
 import java.util.Base64;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +30,9 @@ public class StorageController {
     @Inject
     private StorageService storageService;
 
+    @Inject
+    private BucketService bucketService;
+
     @GetMapping("/")
     public ResponseEntity<String> index() {
         return ResponseEntity.ok("");
@@ -35,9 +40,13 @@ public class StorageController {
 
     @PostMapping("/{application_id}/accounting/{accounting_id}/store")
     public ResponseEntity<String> upload(
+            @RequestHeader("Authorization") String authorization,
             @PathVariable("application_id") String applicationId,
             @PathVariable("accounting_id") String accountingId,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file) throws Exception {
+
+        this.bucketService.authorize(bucketService.get(applicationId), authorization);
+
         return ResponseEntity.ok(storageService.store(file, applicationId, accountingId));
     }
 
