@@ -3,6 +3,7 @@ package br.com.ottimizza.springbotstorageservice.services;
 import br.com.ottimizza.springbotstorageservice.models.Bucket;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -55,15 +57,12 @@ public class BucketService {
         final String AUTH_ENDPOINT = String.format(bucket.getAuthEndpoint() + "?token=%s", authorization);
 
         try {
-            final String ACCEPT = MediaType.APPLICATION_JSON_VALUE;
-            final String CONTENT_TYPE = MediaType.APPLICATION_JSON_VALUE;
-
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpGet httpGet = new HttpGet(AUTH_ENDPOINT);
 
             // Corpo do Request.
-            httpGet.setHeader("Accept", ACCEPT);
-            httpGet.setHeader("Content-type", CONTENT_TYPE);
+            httpGet.setHeader("Accept", MediaType.APPLICATION_JSON_VALUE);
+            httpGet.setHeader("Content-type", MediaType.APPLICATION_JSON_VALUE);
             httpGet.setHeader("Authorization", String.format("Basic %s", authorization));
 
             // Response
@@ -75,19 +74,26 @@ public class BucketService {
 
             System.out.println();
             System.out.println(String.format("*** Response ***"));
+            System.out.println(String.format("URL           -> %s", String.valueOf(AUTH_ENDPOINT)));
+            System.out.println();
+            System.out.println(String.format("*** Response ***"));
             System.out.println(String.format("Status        -> %s", String.valueOf(statusCode)));
             System.out.println(String.format("Body          -> %s", responseBody));
 
             if (statusCode == 200) {
                 System.out.println("200");
+                return true;
             } else if (statusCode == 401) {
                 System.out.println("401");
+                return false;
             }
 
+        } catch (IOException | ParseException ex) {
+            ex.printStackTrace();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return true;
+        return false;
     }
 
     public Bucket get(String bucketId) throws Exception {

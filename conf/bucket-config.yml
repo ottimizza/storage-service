@@ -8,9 +8,9 @@ buckets:
     - tareffa-gestao-servicos:
         name: tareffa-gestao-servicos
         root: /buckets/ 
-        auth_endpoint: https://ordemservicos.herokuapp.com/auth/check_token
+        auth_endpoint: https://development-api-ordemservicos.herokuapp.com/services/auth/check_token
         
     - zap-contabil:
         name: zap-contabil
         root: /buckets/
-        auth_endpoint: https://zapcontabil.herokuapp.com/auth/check_token
+        auth_endpoint: https://development-api-zapcontabil.herokuapp.com/services/auth/check_token
