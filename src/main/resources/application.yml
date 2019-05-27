@@ -1,6 +1,7 @@
 server:
-    context-path: /
-    port: 8083
+    servlet: 
+        context-path: /
+    port: ${PORT:55325}
 
 spring:
   servlet:
