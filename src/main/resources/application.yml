@@ -5,10 +5,6 @@ server:
 
     ssl:
         enabled: true
-        key-store: classpath:keystore.p12
-
-    ssl:
-        enabled: true
         key-alias: s4.ottimizzacontabil.com
         key-store: classpath:keystore/keystore.p12
         key-store-type: PKCS12
