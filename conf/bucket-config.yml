@@ -3,13 +3,15 @@ buckets:
     - bussola-contabil:        
         name: bussola-contabil
         root: /buckets/ 
-        auth_endpoint: https://ottimizza-oauth-server.herokuapp.com/oauth/check_token
-        
+        auth_endpoint: https://development-oauth-server.herokuapp.com/oauth/check_token
+        auth_headers:
+            - Authorization:
+                key: Authorization
+                value: Basic YnVzc29sYS1jb250YWJpbC1jbGllbnQ6YnVzc29sYS1jb250YWJpbC1zZWNyZXQ=
     - tareffa-gestao-servicos:
         name: tareffa-gestao-servicos
         root: /buckets/ 
         auth_endpoint: https://development-api-ordemservicos.herokuapp.com/services/auth/check_token
-        
     - zap-contabil:
         name: zap-contabil
         root: /buckets/

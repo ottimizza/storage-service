@@ -1,6 +1,10 @@
 package br.com.ottimizza.springbotstorageservice.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +28,7 @@ public class Bucket implements Serializable {
     @Setter
     private String authEndpoint;
 
+    @Getter
+    @Setter
+    Map<String, String> authHeaders;
 }

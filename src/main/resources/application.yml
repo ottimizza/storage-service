@@ -4,7 +4,7 @@ server:
     port: ${PORT:55325}
 
     ssl:
-        enabled: true
+        enabled: false
         key-alias: s4.ottimizzacontabil.com
         key-store: classpath:keystore/keystore.p12
         key-store-type: PKCS12
