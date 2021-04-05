@@ -4,7 +4,7 @@ server:
     port: ${PORT:55325}
 
     ssl:
-        enabled: false
+        enabled: true
         key-alias: s3.tareffaapp.com.br
         key-store: classpath:keystore/keystore.p12
         key-store-type: PKCS12
