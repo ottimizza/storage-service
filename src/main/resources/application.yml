@@ -8,8 +8,8 @@ server:
         key-alias: s4.ottimizzacontabil.com
         key-store: classpath:keystore/keystore.p12
         key-store-type: PKCS12
-        key-password: ottimizza@123
-        key-store-password: ottimizza@123
+        key-password: ottimizza
+        key-store-password: ottimizza
 
 spring:
   servlet:
